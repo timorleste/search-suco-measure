@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        
+        <meta name="author" content="timorleste at live dot com | T | Tony Behar | AudioVisual GIS and Archive Development in Timor Leste">
+        <meta name="description" content="Our mission is to help facilitate the newly independent East-Timor in accessing the voices and the key events in its past and fostering an understanding of its unique cultural heritage; to help unite and secure the identity of the country and its people; and to contribute to the forging of a new democratic nation. To ensure the survival of unique resources which contain and communicate the experience and the story of Timor-Leste and to place these at the service of peace and understanding, in Timor-Leste, Regionally and Internationally.">
+        <meta name="keywords" content="Information, Technology, Media, System, Management, Audio, Visual, Archive, CAMSTL, East-Timor, Timor-Leste, Timor-Lorosa'e">
+        <meta property="og:image" content="https://caravela.files.wordpress.com/2021/03/vector-map1-1.png"/>
+        <title>Search Suco name - Measure Settlements overlay </title>
+        
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <link rel="stylesheet" href="css/tonybehar.css">
+
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/tonybehar_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/Timor_Island_0.js"></script>
+        <script src="data/Municipality_1.js"></script>
+        <script src="data/Sub_Municipality_2.js"></script>
+        <script src="data/Suco_Boundaries_3.js"></script>
+        <script src="data/Locallity_2001_Version_4.js"></script>
+        <script src='js/Leaflet.LocationShare.js'></script> 
+        <script>
+                   
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:14, minZoom:7
+        }).fitBounds([[-11.072872735847087,122.5874286245488],[-7.348467729698568,128.55386214006435]]);
+                 
+//Legend-QR
+
+   //L.Control.Watermark = L.Control.extend({
+   //    onAdd: function(map) {
+   //       var img = L.DomUtil.create('img');
+
+   //        img.src = 'images/settlements-suco-map-qr.png';
+   //        img.style.width = '90px';
+
+   //        return img;
+   //    },
+
+   //    onRemove: function(map) {
+        
+   //    }
+   //});
+
+   //L.control.watermark = function(opts) {
+   //    return new L.Control.Watermark(opts);
+   //}
+
+   //L.control.watermark({ position: 'topright' }).addTo(map);
+
+        var hash = new L.Hash(map);
+         map.attributionControl.setPrefix('<a href="https://github.com/timorleste/settlements-cluster-maps" target="_blank">OpenSource GeoMapDev_Contact: Tony Behar</a> <a href="">[ CAMSTL-Centro Audiovisual Max Stahl Timor-Leste ] © [ Metadata 2001-2021 ]</a>');
+       
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        
+     //Measure   
+        
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        function pop_Timor_Island_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AREA'] !== null ? autolinker.link(feature.properties['AREA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PERIMETER'] !== null ? autolinker.link(feature.properties['PERIMETER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BPLY_GEO_'] !== null ? autolinker.link(feature.properties['BPLY_GEO_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BPLY_GEO_I'] !== null ? autolinker.link(feature.properties['BPLY_GEO_I'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BASEPOLY_'] !== null ? autolinker.link(feature.properties['BASEPOLY_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BASEPOLY_I'] !== null ? autolinker.link(feature.properties['BASEPOLY_I'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DXF_TEXT'] !== null ? autolinker.link(feature.properties['DXF_TEXT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Timor_Island_0_0() {
+            return {
+                pane: 'pane_Timor_Island_0',
+                opacity: 1,
+                color: 'rgba(84,129,177,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Timor_Island_0');
+        map.getPane('pane_Timor_Island_0').style.zIndex = 400;
+        map.getPane('pane_Timor_Island_0').style['mix-blend-mode'] = 'normal';
+        var layer_Timor_Island_0 = new L.geoJson(json_Timor_Island_0, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Timor_Island_0',
+            layerName: 'layer_Timor_Island_0',
+            pane: 'pane_Timor_Island_0',
+            onEachFeature: pop_Timor_Island_0,
+            style: style_Timor_Island_0_0,
+        });
+        bounds_group.addLayer(layer_Timor_Island_0);
+        map.addLayer(layer_Timor_Island_0);
+        function pop_Municipality_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">DISTRICT</th>\
+                        <td>' + (feature.properties['DISTRICT'] !== null ? autolinker.link(feature.properties['DISTRICT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NEWDISCODE'] !== null ? autolinker.link(feature.properties['NEWDISCODE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Municipality_1_0(feature) {
+            switch(String(feature.properties['DISTRICT'])) {
+                case 'AILEU':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,124,151,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'AINARO':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(58,227,140,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'BAUCAU':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(38,89,128,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(55,203,196,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'BOBONARO':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(106,176,222,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'COVALIMA':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(216,79,48,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'DILI':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,83,190,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'ERMERA':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(75,227,81,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'LAUTEM':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(154,210,110,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'LIQUIÇÁ':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(193,206,71,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'MANATUTO':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(214,156,47,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'MANUFAHI':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(146,100,231,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'OECUSSI':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(194,118,213,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+                case 'VIQUEQUE':
+                    return {
+                pane: 'pane_Municipality_1',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.47600000000000003)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(111,122,206,0.47600000000000003)',
+                interactive: false,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Municipality_1');
+        map.getPane('pane_Municipality_1').style.zIndex = 401;
+        map.getPane('pane_Municipality_1').style['mix-blend-mode'] = 'hard-light';
+        var layer_Municipality_1 = new L.geoJson(json_Municipality_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Municipality_1',
+            layerName: 'layer_Municipality_1',
+            pane: 'pane_Municipality_1',
+            onEachFeature: pop_Municipality_1,
+            style: style_Municipality_1_0,
+        });
+        bounds_group.addLayer(layer_Municipality_1);
+        map.addLayer(layer_Municipality_1);
+        function pop_Sub_Municipality_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">SUBDISTR</th>\
+                        <td>' + (feature.properties['SUBDISTR'] !== null ? autolinker.link(feature.properties['SUBDISTR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NEWSBDCODE'] !== null ? autolinker.link(feature.properties['NEWSBDCODE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Sub_Municipality_2_0() {
+            return {
+                pane: 'pane_Sub_Municipality_2',
+                opacity: 1,
+                color: 'rgba(77,175,74,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Sub_Municipality_2');
+        map.getPane('pane_Sub_Municipality_2').style.zIndex = 402;
+        map.getPane('pane_Sub_Municipality_2').style['mix-blend-mode'] = 'normal';
+        var layer_Sub_Municipality_2 = new L.geoJson(json_Sub_Municipality_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Sub_Municipality_2',
+            layerName: 'layer_Sub_Municipality_2',
+            pane: 'pane_Sub_Municipality_2',
+            onEachFeature: pop_Sub_Municipality_2,
+            style: style_Sub_Municipality_2_0,
+        });
+        bounds_group.addLayer(layer_Sub_Municipality_2);
+        map.addLayer(layer_Sub_Municipality_2);
+        function pop_Suco_Boundaries_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">DISTRICT</th>\
+                        <td>' + (feature.properties['DISTRICT'] !== null ? autolinker.link(feature.properties['DISTRICT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SUBDISTR</th>\
+                        <td>' + (feature.properties['SUBDISTR'] !== null ? autolinker.link(feature.properties['SUBDISTR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NEWSUCO</th>\
+                        <td>' + (feature.properties['NEWSUCO'] !== null ? autolinker.link(feature.properties['NEWSUCO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['HECTARES'] !== null ? autolinker.link(feature.properties['HECTARES'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['X_COORD'] !== null ? autolinker.link(feature.properties['X_COORD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Y_COORD'] !== null ? autolinker.link(feature.properties['Y_COORD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Suco_Boundaries_3_0() {
+            return {
+                pane: 'pane_Suco_Boundaries_3',
+                opacity: 1,
+                color: 'rgba(15,35,52,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Suco_Boundaries_3');
+        map.getPane('pane_Suco_Boundaries_3').style.zIndex = 403;
+        map.getPane('pane_Suco_Boundaries_3').style['mix-blend-mode'] = 'normal';
+        var layer_Suco_Boundaries_3 = new L.geoJson(json_Suco_Boundaries_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Suco_Boundaries_3',
+            layerName: 'layer_Suco_Boundaries_3',
+            pane: 'pane_Suco_Boundaries_3',
+            onEachFeature: pop_Suco_Boundaries_3,
+            style: style_Suco_Boundaries_3_0,
+        });
+        bounds_group.addLayer(layer_Suco_Boundaries_3);
+        map.addLayer(layer_Suco_Boundaries_3);
+        function pop_Locallity_2001_Version_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PLACE_NAME</th>\
+                        <td>' + (feature.properties['PLACE_NAME'] !== null ? autolinker.link(feature.properties['PLACE_NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LONGITUDE'] !== null ? autolinker.link(feature.properties['LONGITUDE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LATITUDE'] !== null ? autolinker.link(feature.properties['LATITUDE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COUNTRY_ID</th>\
+                        <td>' + (feature.properties['COUNTRY_ID'] !== null ? autolinker.link(feature.properties['COUNTRY_ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Locallity_2001_Version_4_0() {
+            return {
+                pane: 'pane_Locallity_2001_Version_4',
+                radius: 2.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(19,7,182,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Locallity_2001_Version_4');
+        map.getPane('pane_Locallity_2001_Version_4').style.zIndex = 404;
+        map.getPane('pane_Locallity_2001_Version_4').style['mix-blend-mode'] = 'normal';
+        var layer_Locallity_2001_Version_4 = new L.geoJson(json_Locallity_2001_Version_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Locallity_2001_Version_4',
+            layerName: 'layer_Locallity_2001_Version_4',
+            pane: 'pane_Locallity_2001_Version_4',
+            onEachFeature: pop_Locallity_2001_Version_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Locallity_2001_Version_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Locallity_2001_Version_4);
+        map.addLayer(layer_Locallity_2001_Version_4);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Locallity_2001_Version_4.png" /> Locallity_2001_Version': layer_Locallity_2001_Version_4,'<img src="legend/Suco_Boundaries_3.png" /> Suco_Boundaries': layer_Suco_Boundaries_3,'<img src="legend/Sub_Municipality_2.png" /> Sub_Municipality': layer_Sub_Municipality_2,'Municipality<br /><table><tr><td style="text-align: center;"><img src="legend/Municipality_1_AILEU0.png" /></td><td>AILEU</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_AINARO1.png" /></td><td>AINARO</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_BAUCAU2.png" /></td><td>BAUCAU</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_BOBONARO3.png" /></td><td>BOBONARO</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_COVALIMA4.png" /></td><td>COVALIMA</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_DILI5.png" /></td><td>DILI</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_ERMERA6.png" /></td><td>ERMERA</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_LAUTEM7.png" /></td><td>LAUTEM</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_LIQUIÇÁ8.png" /></td><td>LIQUIÇÁ</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_MANATUTO9.png" /></td><td>MANATUTO</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_MANUFAHI10.png" /></td><td>MANUFAHI</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_OECUSSI11.png" /></td><td>OECUSSI</td></tr><tr><td style="text-align: center;"><img src="legend/Municipality_1_VIQUEQUE12.png" /></td><td>VIQUEQUE</td></tr></table>': layer_Municipality_1,'<img src="legend/Timor_Island_0.png" /> Timor_Island': layer_Timor_Island_0,}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_Suco_Boundaries_3,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'NEWSUCO'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        </script>
+    </body>
+</html>
