@@ -5,6 +5,7 @@ This map illustrates the extent of the settlement locality, suco boundaries data
 
 ![alt text](https://github.com/timorleste/search-suco-measure/blob/main/images/search-suco.png?raw=true)
 
+![alt text](https://github.com/timorleste/search-suco-measure/blob/main/images/smartphone-demo.png?raw=true)
 
 For a complete list of attributes, see the GeoReference Municipality Suco Boundaries Basemap:
 
