@@ -79,5 +79,3 @@ GeoReference Other GIS Development:
 [Version_01 - Rivers](https://timorleste.github.io/rivers "Rivers Map")
 
 [Version_01 - Wasa-Diga](https://timorleste.github.io/wasa-diga-av-map "Wasa-Diga Abrigo Map")
-
-
