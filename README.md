@@ -2,8 +2,6 @@
 
 This map illustrates the extent of the settlement locality, suco boundaries database. Click on the map to receive more information about individual point objects on the map. Demonstration of thematic layers at CAMSTL Timor-Leste Audiovisual Archive Localhost server. Refer to data source notes for additional information. [ Metadata 18-02-2001 - 02-03-2021 ].
 
-[A concept in psychology](https://www.technologyreview.com/2020/07/17/1005415/a-concept-in-psychology-is-helping-ai-to-better-navigate-our-world "AI")
-
 ![alt text](https://github.com/timorleste/search-suco-measure/blob/main/images/ai-theory.png?raw=true)
 
 ![alt text](https://github.com/timorleste/search-suco-measure/blob/main/images/search-suco.png?raw=true)
