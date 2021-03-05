@@ -6,7 +6,7 @@ This map illustrates the extent of the settlement locality, suco boundaries data
 
 ![alt text](https://github.com/timorleste/search-suco-measure/blob/main/images/smartphone-demo.png?raw=true)
 
-For a complete list of attributes, see the GeoReference Municipality Suco Boundaries Basemap:
+Geodatabase-Georeference Preservation:
 
 [Version_01 - AILEU Map Info](https://timorleste.github.io/aileu "Suco Map")
 
@@ -35,9 +35,6 @@ For a complete list of attributes, see the GeoReference Municipality Suco Bounda
 [Version_01 - OECUSSE Map Info](https://timorleste.github.io/oecusse "Suco Map")
 
 [Version_01 - VIQUEQUE Map Info](https://timorleste.github.io/viqueque "Suco Map")
-
-
-GeoReference GIS Development:
 
 [Version_01 - Elevation Map](https://timorleste.github.io/waterbodies "Waterbodies-Elevation Map")
 
