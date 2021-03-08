@@ -30,7 +30,7 @@ Geodatabase-Georeference Preservation:
 
 [Version_01 - MANATUTO Map Info](https://timorleste.github.io/manatuto "Suco Map")
 
-[Version_01 - MANUFAHI Map Info](https://timorleste.github.io/manufahi "Suco Map") 
+[Version_01 - MANUFAHI Map Info](https://timorleste.github.io/manufahi "Suco Map")
 
 [Version_01 - MANATUTO Map Info](https://timorleste.github.io/manatuto "Suco Map")
 
