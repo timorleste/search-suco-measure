@@ -6,6 +6,8 @@ This map illustrates the extent of the settlement locality, suco boundaries data
 
 ![alt text](https://github.com/timorleste/search-suco-measure/blob/main/images/smartphone-demo.png?raw=true)
 
+![alt text](https://github.com/timorleste/search-suco-measure/blob/main/images/localhost-geodatabase.png?raw=true)
+
 Geodatabase-Georeference Preservation:
 
 [Version_01 - AILEU Map Info](https://timorleste.github.io/aileu "Suco Map")
